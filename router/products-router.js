@@ -5,6 +5,7 @@ const productRouter = express.Router();
 
 // Obtener todos los productos
 productRouter.get('/', async (req, res) => {
+
   try {
     const data = await fs.readFile('./database/products.json', 'utf8');
     const products = JSON.parse(data);
@@ -18,6 +19,7 @@ productRouter.get('/', async (req, res) => {
     }
 
     res.json(limitedProducts);
+
   } catch (error) {
     console.error('Error al obtener los productos', error);
     res.status(500).json({ error: 'Error al obtener los productos' });
@@ -26,7 +28,9 @@ productRouter.get('/', async (req, res) => {
 
 // Obtener un producto por ID
 productRouter.get('/:pid', async (req, res) => {
+
   const productId = parseInt(req.params.pid)
+
   try {
     const data = await fs.readFile('./database/products.json', 'utf8');
     const products = JSON.parse(data);
@@ -42,8 +46,9 @@ productRouter.get('/:pid', async (req, res) => {
   }
 });
 
-
+// Agregar producto al array
 productRouter.post('/', async (req, res) => {
+
   try {
     const nuevoProducto = req.body;
 
@@ -65,7 +70,9 @@ productRouter.post('/', async (req, res) => {
   }
 });
 
+// Actualizar producto del array
 productRouter.put('/:pid', async (req, res) => {
+
   const productId = parseInt(req.params.pid);
   const updatedProduct = req.body;
 
@@ -96,7 +103,9 @@ productRouter.put('/:pid', async (req, res) => {
   }
 });
 
+// Eliminar producto por id
 productRouter.delete('/:pid', async (req, res) => {
+
   const productId = parseInt(req.params.pid);
 
   try {

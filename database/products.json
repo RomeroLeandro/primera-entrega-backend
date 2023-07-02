@@ -2,7 +2,7 @@
   {
     "id": 1,
     "title": "Laptop",
-    "description": "Potente laptop para uso profesional y personal",
+    "description": "Descripción del nuevo producto",
     "code": "LT001",
     "price": 999.99,
     "status": true,
@@ -11,20 +11,6 @@
     "thumbnails": [
       "ruta/imagen1.jpg",
       "ruta/imagen2.jpg"
-    ]
-  },
-  {
-    "id": 2,
-    "title": "Teléfono inteligente",
-    "description": "Último modelo de teléfono inteligente con cámara de alta resolución",
-    "code": "PH001",
-    "price": 799.99,
-    "status": true,
-    "stock": 15,
-    "category": "Tecnología",
-    "thumbnails": [
-      "ruta/imagen3.jpg",
-      "ruta/imagen4.jpg"
     ]
   },
   {
