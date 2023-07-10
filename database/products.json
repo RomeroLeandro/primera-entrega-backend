@@ -124,5 +124,33 @@
       "ruta/imagen19.jpg",
       "ruta/imagen20.jpg"
     ]
+  },
+  {
+    "title": "Laptop",
+    "description": "Descripción del nuevo producto",
+    "code": "LT001",
+    "price": 999.99,
+    "status": true,
+    "stock": 20,
+    "category": "Tecnología",
+    "thumbnails": [
+      "ruta/imagen1.jpg",
+      "ruta/imagen2.jpg"
+    ],
+    "id": 11
+  },
+  {
+    "title": "Laptop",
+    "description": "Descripción del nuevo producto",
+    "code": "LT001",
+    "price": 999.99,
+    "status": true,
+    "stock": 20,
+    "category": "Tecnología",
+    "thumbnails": [
+      "ruta/imagen1.jpg",
+      "ruta/imagen2.jpg"
+    ],
+    "id": 12
   }
 ]
