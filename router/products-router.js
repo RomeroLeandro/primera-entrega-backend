@@ -1,7 +1,6 @@
 const express = require('express');
 const fs = require('fs').promises;
 const path = require('path');
-const { io } = require('../server-express');
 
 const productRouter = express.Router();
 
