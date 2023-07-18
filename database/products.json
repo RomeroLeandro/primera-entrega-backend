@@ -1,19 +1,5 @@
 [
   {
-    "id": 1,
-    "title": "Laptop",
-    "description": "Descripción del nuevo producto",
-    "code": "LT001",
-    "price": 999.99,
-    "status": true,
-    "stock": 20,
-    "category": "Tecnología",
-    "thumbnails": [
-      "ruta/imagen1.jpg",
-      "ruta/imagen2.jpg"
-    ]
-  },
-  {
     "id": 3,
     "title": "Tableta",
     "description": "Tableta con pantalla táctil de alta definición y gran capacidad de almacenamiento",
@@ -67,20 +53,6 @@
     "thumbnails": [
       "ruta/imagen11.jpg",
       "ruta/imagen12.jpg"
-    ]
-  },
-  {
-    "id": 7,
-    "title": "Altavoz Bluetooth",
-    "description": "Altavoz portátil con conectividad Bluetooth y sonido de alta fidelidad",
-    "code": "AL001",
-    "price": 129.99,
-    "status": true,
-    "stock": 18,
-    "category": "Tecnología",
-    "thumbnails": [
-      "ruta/imagen13.jpg",
-      "ruta/imagen14.jpg"
     ]
   },
   {
@@ -152,5 +124,61 @@
       "ruta/imagen2.jpg"
     ],
     "id": 12
+  },
+  {
+    "title": "Laptop",
+    "description": "Descripción del nuevo producto",
+    "code": "LT001",
+    "price": 999.99,
+    "status": true,
+    "stock": 20,
+    "category": "Tecnología",
+    "thumbnails": [
+      "ruta/imagen1.jpg",
+      "ruta/imagen2.jpg"
+    ],
+    "id": 13
+  },
+  {
+    "title": "Laptop",
+    "description": "Descripción del nuevo producto",
+    "code": "LT001",
+    "price": 999.99,
+    "status": true,
+    "stock": 20,
+    "category": "Tecnología",
+    "thumbnails": [
+      "ruta/imagen1.jpg",
+      "ruta/imagen2.jpg"
+    ],
+    "id": 14
+  },
+  {
+    "title": "Laptop",
+    "description": "Descripción del nuevo producto",
+    "code": "LT001",
+    "price": 999.99,
+    "status": true,
+    "stock": 20,
+    "category": "Tecnología",
+    "thumbnails": [
+      "ruta/imagen1.jpg",
+      "ruta/imagen2.jpg"
+    ],
+    "id": 15
+  },
+  {
+    "title": "Laptop",
+    "description": "Descripción del nuevo producto",
+    "code": "LT001",
+    "price": 999.99,
+    "status": true,
+    "stock": 20,
+    "category": "Tecnología",
+    "thumbnails": [
+      "ruta/imagen1.jpg",
+      "ruta/imagen2.jpg"
+    ],
+    "id": 16
   }
 ]

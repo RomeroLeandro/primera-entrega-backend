@@ -43,10 +43,12 @@ productRouter.get('/:pid', async (req, res) => {
 productRouter.post('/', async (req, res) => {
   try {
     const nuevoProducto = req.body;
+    console.log('Datos del nuevo producto:', nuevoProducto);
 
     const data = await fs.readFile(productsFilePath, 'utf8');
     const productos = JSON.parse(data);
 
+    // Agregar el ID al nuevo producto
     if (productos.length > 0) {
       const ultimoProducto = productos[productos.length - 1];
       nuevoProducto.id = ultimoProducto.id + 1;
@@ -55,8 +57,13 @@ productRouter.post('/', async (req, res) => {
     }
 
     productos.push(nuevoProducto);
+    console.log('Producto agregado al arreglo:', nuevoProducto);
+
     await fs.writeFile(productsFilePath, JSON.stringify(productos, null, 2), 'utf8');
-    io.emit('productosActualizados'); // Emitir el evento "productosActualizados" a través del socket
+    console.log('Producto agregado al archivo:', nuevoProducto);
+
+    // Emitir el evento "productosActualizados" a través del socket
+    req.io.emit('productosActualizados', { productos });
 
     res.status(201).json(nuevoProducto);
   } catch (error) {
@@ -86,7 +93,7 @@ productRouter.put('/:pid', async (req, res) => {
       });
 
       await fs.writeFile(productsFilePath, JSON.stringify(products, null, 2), 'utf8');
-      io.emit('productosActualizados'); // Emitir el evento "productosActualizados" a través del socket
+      io.emit('productosActualizados', { productos }); // Emitir el evento "productosActualizados" a través del socket
 
       res.json(existingProduct);
     } else {
@@ -112,7 +119,7 @@ productRouter.delete('/:pid', async (req, res) => {
 
       products.splice(productIndex, 1);
       await fs.writeFile(productsFilePath, JSON.stringify(products, null, 2), 'utf8');
-      io.emit('productosActualizados'); // Emitir el evento "productosActualizados" a través del socket
+      io.emit('productosActualizados', { productos }); // Emitir el evento "productosActualizados" a través del socket
 
       res.status(200).json({ message: 'Producto eliminado exitosamente', deletedProduct });
     } else {

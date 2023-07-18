@@ -3,10 +3,8 @@ const productRouter = require('./router/products-router');
 const cartRouter = require('./router/cart-router');
 
 const path = require('path');
-const handlebars = require('express-handlebars').create({
-  defaultLayout: 'home',
-  layoutsDir: path.join(__dirname, 'views', 'layouts')
-});
+const handlebars = require('express-handlebars')
+const hbs = handlebars.create()
 const http = require('http');
 const socketIO = require('socket.io');
 const fs = require('fs').promises;
@@ -15,31 +13,24 @@ const app = express();
 const server = http.createServer(app);
 const io = socketIO(server);
 
-const PORT = 8082;
+const PORT = 8081;
 
-app.engine('handlebars', handlebars.engine);
+app.engine('handlebars', hbs.engine);
 app.set('view engine', 'handlebars');
-app.set('views', path.join(__dirname, 'views', 'layouts'));
+app.set('views', path.join(__dirname, 'views'));
 
 // Middleware para procesar el cuerpo de las solicitudes como JSON
 app.use(express.json());
+
+app.use((req, res, next) => {
+  req.io = io;
+  next();
+});
 
 // Rutas
 app.use('/api/products', productRouter);
 app.use('/api/cart', cartRouter);
 
-app.get('/', async (req, res) => {
-  try {
-    const productsFilePath = path.join(__dirname, 'database', 'products.json');
-    const data = await fs.readFile(productsFilePath, 'utf8');
-    const products = JSON.parse(data);
-
-    res.render('home', { productos: products });
-  } catch (error) {
-    console.error('Error al obtener los productos', error);
-    res.status(500).json({ error: 'Error al obtener los productos' });
-  }
-});
 app.get('/realtimeproducts', async (req, res) => {
   try {
     const productsFilePath = path.join(__dirname, 'database', 'products.json');
@@ -53,6 +44,21 @@ app.get('/realtimeproducts', async (req, res) => {
   }
 });
 
+app.get('/', async (req, res) => {
+  try {
+    const productsFilePath = path.join(__dirname, 'database', 'products.json');
+    const data = await fs.readFile(productsFilePath, 'utf8');
+    const products = JSON.parse(data);
+
+    res.render('home', { productos: products });
+  } catch (error) {
+    console.error('Error al obtener los productos', error);
+    res.status(500).json({ error: 'Error al obtener los productos' });
+  }
+});
+
+
+
 app.use(express.static(path.join(__dirname, 'public')));
 
 io.on('connection', (socket) => {
@@ -61,10 +67,7 @@ io.on('connection', (socket) => {
   socket.on('disconnect', () => {
     console.log('Cliente desconectado');
   });
-});
 
-// Escuchar el evento "productosActualizados" y emitir los productos actualizados a través del socket
-io.on('connection', (socket) => {
   socket.on('productosActualizados', async () => {
     try {
       const productsFilePath = path.join(__dirname, 'database', 'products.json');
