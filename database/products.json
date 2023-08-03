@@ -98,87 +98,17 @@
     ]
   },
   {
-    "title": "Laptop",
-    "description": "Descripción del nuevo producto",
-    "code": "LT001",
-    "price": 999.99,
-    "status": true,
+    "id": "11",
+    "code": "LT023",
     "stock": 20,
+    "title": "Laptop",
+    "price": 999.99,
     "category": "Tecnología",
     "thumbnails": [
       "ruta/imagen1.jpg",
       "ruta/imagen2.jpg"
     ],
-    "id": 11
-  },
-  {
-    "title": "Laptop",
     "description": "Descripción del nuevo producto",
-    "code": "LT001",
-    "price": 999.99,
-    "status": true,
-    "stock": 20,
-    "category": "Tecnología",
-    "thumbnails": [
-      "ruta/imagen1.jpg",
-      "ruta/imagen2.jpg"
-    ],
-    "id": 12
-  },
-  {
-    "title": "Laptop",
-    "description": "Descripción del nuevo producto",
-    "code": "LT001",
-    "price": 999.99,
-    "status": true,
-    "stock": 20,
-    "category": "Tecnología",
-    "thumbnails": [
-      "ruta/imagen1.jpg",
-      "ruta/imagen2.jpg"
-    ],
-    "id": 13
-  },
-  {
-    "title": "Laptop",
-    "description": "Descripción del nuevo producto",
-    "code": "LT001",
-    "price": 999.99,
-    "status": true,
-    "stock": 20,
-    "category": "Tecnología",
-    "thumbnails": [
-      "ruta/imagen1.jpg",
-      "ruta/imagen2.jpg"
-    ],
-    "id": 14
-  },
-  {
-    "title": "Laptop",
-    "description": "Descripción del nuevo producto",
-    "code": "LT001",
-    "price": 999.99,
-    "status": true,
-    "stock": 20,
-    "category": "Tecnología",
-    "thumbnails": [
-      "ruta/imagen1.jpg",
-      "ruta/imagen2.jpg"
-    ],
-    "id": 15
-  },
-  {
-    "title": "Laptop",
-    "description": "Descripción del nuevo producto",
-    "code": "LT001",
-    "price": 999.99,
-    "status": true,
-    "stock": 20,
-    "category": "Tecnología",
-    "thumbnails": [
-      "ruta/imagen1.jpg",
-      "ruta/imagen2.jpg"
-    ],
-    "id": 16
+    "status": true
   }
 ]
