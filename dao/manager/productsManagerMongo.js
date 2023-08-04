@@ -40,7 +40,11 @@ class ProductManagerMongo {
             code: body.code || product.code,
             stock: body.stock || product.stock,
             title: body.title || product.title,
-            price: body.price || product.email
+            price: body.price || product.price,
+            category: body.category || product.category,
+            thumbnails: body.thumbnails || product.thumbnails,
+            description: body.description || product.description,
+            status: body.status || product.status
         }
 
         await this.model.updateOne({ _id: id }, productUpdated)

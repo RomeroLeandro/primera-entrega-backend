@@ -110,5 +110,19 @@
     ],
     "description": "Descripción del nuevo producto",
     "status": true
+  },
+  {
+    "id": "12",
+    "code": "TB004",
+    "stock": 10,
+    "title": "Celular",
+    "price": 499.99,
+    "category": "Tecnología",
+    "thumbnails": [
+      "ruta/imagen5.jpg",
+      "ruta/imagen6.jpg"
+    ],
+    "description": "Descripción del nuevo producto",
+    "status": true
   }
 ]

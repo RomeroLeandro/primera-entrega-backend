@@ -1,6 +1,9 @@
 const express = require('express');
+
 const productsRouter = require('./router/products-router')
-const viewsRouter = require('./router/views.router')
+const productViewRouter = require('./router/productViewRouter')
+const cartRouter = require('./router/cart-router');
+const cartViewRouter = require('./router/cartViewRouter')
 
 const mongoose = require('mongoose')
 const handlebars = require('express-handlebars')
@@ -22,7 +25,9 @@ app.use(express.urlencoded({extended:true}));
 app.use(express.static('public'));
 
 app.use('/api/products', productsRouter)
-app.use('/products', viewsRouter)
+app.use('/products', productViewRouter)
+app.use('/api/carts', cartRouter)
+app.use('/cart', cartViewRouter)
 
 app.get('/', (req, res) => {
   res.json({
@@ -31,7 +36,7 @@ app.get('/', (req, res) => {
   })
 })
 
-const PORT = 8080;
+const PORT = 3000;
 app.listen(PORT, () => console.log(`servidor corriendo en puerto ${PORT}`));
 
 

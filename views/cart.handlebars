@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Cart Details</title>
+</head>
+<body>
+    <head>
+  <title>Cart</title>
+</head>
+<body>
+  <h1>Cart</h1>
+  {{#if cart}}
+    <ul>
+      {{#each cart.products}}
+        <li>{{this.title}} - {{this.price}}</li>
+      {{/each}}
+    </ul>
+  {{else}}
+    <p>No hay productos en el carrito</p>
+  {{/if}}
+</body>
+</body>
+</html>

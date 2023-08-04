@@ -18,7 +18,7 @@ class ProductManagerFile {
     try {
       const productsData = await fs.readFile(filePath, 'utf-8');
       const products = JSON.parse(productsData);
-      const product = products.find((p) => p._id === id);
+      const product = products.find((p) => p.id === id);
       return product || null;
     } catch (error) {
       return null;
@@ -53,7 +53,7 @@ class ProductManagerFile {
     try {
       const productsData = await fs.readFile(filePath, 'utf-8');
       const products = JSON.parse(productsData);
-      const productIndex = products.findIndex((p) => p._id === id);
+      const productIndex = products.findIndex((p) => p.id === id);
       if (productIndex !== -1) {
         const updatedProduct = { ...products[productIndex], ...body };
         products[productIndex] = updatedProduct;
@@ -71,7 +71,7 @@ class ProductManagerFile {
     try {
       const productsData = await fs.readFile(filePath, 'utf-8');
       const products = JSON.parse(productsData);
-      const productIndex = products.findIndex((p) => p._id === id);
+      const productIndex = products.findIndex((p) => p.id === id);
       if (productIndex !== -1) {
         const deletedProduct = products.splice(productIndex, 1)[0];
         await fs.writeFile(filePath, JSON.stringify(products, null, 2), 'utf-8');

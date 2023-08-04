@@ -3,7 +3,7 @@ const ProductManagerMongo = require('../dao/manager/productsManagerMongo')
 const ProductManagerFile = require('../dao/manager/productsManagerFile');
 const productsRouter = Router()
 
-const USE_MONGO_DB = false;
+const USE_MONGO_DB = require('../config/config');
 const productManager = USE_MONGO_DB ? new ProductManagerMongo() : new ProductManagerFile();
 
 
