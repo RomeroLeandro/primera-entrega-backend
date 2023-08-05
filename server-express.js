@@ -4,6 +4,7 @@ const productsRouter = require('./router/products-router')
 const productViewRouter = require('./router/productViewRouter')
 const cartRouter = require('./router/cart-router');
 const cartViewRouter = require('./router/cartViewRouter')
+const messageRouter = require('./router/messageRouter');
 
 const mongoose = require('mongoose')
 const handlebars = require('express-handlebars')
@@ -28,6 +29,9 @@ app.use('/api/products', productsRouter)
 app.use('/products', productViewRouter)
 app.use('/api/carts', cartRouter)
 app.use('/cart', cartViewRouter)
+app.use('/api/messages', messageRouter);
+app.use('/messages/new', (req, res) => res.render('messageForm', { message: {} }));
+app.use('/messages/edit/:id', messageRouter);
 
 app.get('/', (req, res) => {
   res.json({
