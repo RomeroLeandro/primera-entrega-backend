@@ -12,7 +12,9 @@ const cartManager = USE_MONGO_DB ? new CartManagerMongo() : new CartManagerFile(
 // Ruta para mostrar los detalles del carrito
 cartRouter.get('/:cid', async (req, res) => {
   const cid = req.params.cid;
+  console.log('Carrito ID:', cid);
   const cart = await cartManager.getCartById(cid);
+  console.log('Contenido del carrito:', cart);
   res.render('cart', { cart });
 });
 

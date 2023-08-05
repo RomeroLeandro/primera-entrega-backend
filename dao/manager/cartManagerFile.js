@@ -12,12 +12,13 @@ class CartManagerFile {
       return [];
     }
   }
+  
 
   async getCartById(id) {
     try {
       const cartsData = await fs.readFile(filePath, 'utf-8');
       const carts = JSON.parse(cartsData);
-      const cart = carts.find((c) => c._id === id);
+      const cart = carts.find((c) => c.id === id);
       return cart || null;
     } catch (error) {
       return null;

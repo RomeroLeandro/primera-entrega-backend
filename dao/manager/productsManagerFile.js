@@ -19,6 +19,7 @@ class ProductManagerFile {
       const productsData = await fs.readFile(filePath, 'utf-8');
       const products = JSON.parse(productsData);
       const product = products.find((p) => p.id === id);
+      console.log('Producto obtenido:', product);
       return product || null;
     } catch (error) {
       return null;
