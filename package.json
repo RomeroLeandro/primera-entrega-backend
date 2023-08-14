@@ -15,6 +15,7 @@
     "http": "^0.0.1-security",
     "mongodb": "^5.7.0",
     "mongoose": "^7.4.1",
+    "mongoose-paginate-v2": "^1.7.31",
     "path": "^0.12.7",
     "socket.io": "^4.7.1"
   }
