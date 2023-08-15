@@ -26,16 +26,19 @@
   </table>
   
   {{#if hasPrevPage }}
-    <a href="/products?page={{prevPage}}&limit={{limit}}">Página previa</a>
+    <a href="/products?page={{prevPage}}&limit={{limit}}&sort={{sort}}">Página previa</a>
   {{/if}}
 
   {{#if hasNextPage }}
-    <a href="/products?page={{nextPage}}&limit={{limit}}">Página siguiente</a>
+    <a href="/products?page={{nextPage}}&limit={{limit}}&sort={{sort}}">Página siguiente</a>
   {{/if}}
-
-  <a href="/products?page={{page}}&limit=10">10 por página</a>
-  <a href="/products?page={{page}}&limit=20">20 por página</a>
-  <a href="/products?page={{page}}&limit=50">50 por página</a>
+<div style="display: flex">
+  <a href="/products?page={{page}}&limit=10&sort={{sort}}">10 por página</a>
+  <a href="/products?page={{page}}&limit=20&sort={{sort}}">20 por página</a>
+  <a href="/products?page={{page}}&limit=50&sort={{sort}}">50 por página</a>
+</div>
+  <a href="/products?page={{page}}&limit={{limit}}&sort=asc">Precio ascendente</a>
+  <a href="/products?page={{page}}&limit={{limit}}&sort=desc">Precio descendente</a>
 
   <script src="../public/js/socket.io.js"></script>
   <script src="../public/js/products.js"></script>
