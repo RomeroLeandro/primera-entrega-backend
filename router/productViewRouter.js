@@ -1,36 +1,34 @@
-const {Router} = require('express')
-const ProductManagerMongo = require('../dao/manager/productsManagerMongo')
-const ProductManagerFile = require('../dao/manager/productsManagerFile');
-const productsViewsRouter = Router()
-const productModel = require('../dao/model/products-model');
+const { Router } = require("express");
+const ProductManagerMongo = require("../dao/manager/productsManagerMongo");
+const ProductManagerFile = require("../dao/manager/productsManagerFile");
+const productsViewsRouter = Router();
+const productModel = require("../dao/model/products-model");
 
 // const USE_MONGO_DB = require('../config/config');
 // const productManager = USE_MONGO_DB ? new ProductManagerMongo() : new ProductManagerFile();
 
-
-
-productsViewsRouter.get('/', async (req, res) => {
+productsViewsRouter.get("/", async (req, res) => {
   const page = req.query.page || 1;
   const limit = req.query.limit || 10;
-  const sort = req.query.sort || '';
-  const category = req.query.category || '';
-  const stock = req.query.stock || '';
+  const sort = req.query.sort || "";
+  const category = req.query.category || "";
+  const stock = req.query.stock || "";
 
   const query = {};
 
   if (category) {
-    query.category = { $regex: category, $options: 'i' };
+    query.category = { $regex: category, $options: "i" };
   }
 
-  if (stock !== '') {
+  if (stock !== "") {
     query.stock = parseInt(stock);
   }
 
   let sortQuery = {};
 
-  if (sort === 'asc') {
+  if (sort === "asc") {
     sortQuery = { price: 1 };
-  } else if (sort === 'desc') {
+  } else if (sort === "desc") {
     sortQuery = { price: -1 };
   }
 
@@ -42,14 +40,16 @@ productsViewsRouter.get('/', async (req, res) => {
 
   try {
     const products = await productModel.paginate(query, options);
-    console.log('Products:', products);
+    console.log("Products:", products);
     products.docs = products.docs.map((product) => product.toObject());
 
-    return res.render('products', products);
+    return res.render("products", products);
   } catch (error) {
-    console.error('Error:', error);
-    return res.status(500).json({ status: 'error', error: 'Internal server error' });
+    console.error("Error:", error);
+    return res
+      .status(500)
+      .json({ status: "error", error: "Internal server error" });
   }
 });
 
-module.exports = productsViewsRouter
+module.exports = productsViewsRouter;

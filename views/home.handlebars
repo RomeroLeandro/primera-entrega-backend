@@ -1,18 +1,18 @@
-<!DOCTYPE html>
 <html>
 
-<head>
-  <title>Lista de Productos</title>
-</head>
+  <head>
+    <title>Lista de Productos</title>
+    <link rel="stylesheet" type="text/css" href="/public/style.css" />
+  </head>
 
-<body>
-  <h1>Lista de Productos</h1>
+  <body>
+    <h1>Lista de Productos</h1>
 
-  <ul id="product-list">
-    {{#each productos}}
-    <li>{{title}} - Precio: {{price}}</li>
-    {{/each}}
-  </ul>
-</body>
+    <ul id="product-list">
+      {{#each productos}}
+        <li>{{title}} - Precio: {{price}}</li>
+      {{/each}}
+    </ul>
+  </body>
 
 </html>
