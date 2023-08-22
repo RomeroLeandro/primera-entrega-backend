@@ -1,3 +1,9 @@
+.btn.dropdown-toggle:focus {
+  outline: none; /* Quitar el resaltado del enfoque por defecto */
+  box-shadow: none; /* Quitar la sombra por defecto del enfoque */
+  border-color: transparent !important; /* Cambiar el color del borde a transparente */
+}
+
 /* CARDS */
 .product-container {
   display: flex;
@@ -9,8 +15,8 @@
 }
 
 .card {
-  min-width: 200px;
-  max-width: 200px;
+  min-width: 250px;
+  max-width: 250px;
   /* height: 254px; */
   min-height: 300px;
   padding: 0.8em;

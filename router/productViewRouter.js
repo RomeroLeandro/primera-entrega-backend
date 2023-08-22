@@ -43,7 +43,9 @@ productsViewsRouter.get("/", async (req, res) => {
     console.log("Products:", products);
     products.docs = products.docs.map((product) => product.toObject());
 
-    return res.render("products", products);
+    const user = req.session.user;
+
+    return res.render("products", { products, user });
   } catch (error) {
     console.error("Error:", error);
     return res
