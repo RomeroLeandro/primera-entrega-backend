@@ -4,10 +4,20 @@ const ProductManagerFile = require("../dao/manager/productsManagerFile");
 const productsViewsRouter = Router();
 const productModel = require("../dao/model/products-model");
 
+const Handlebars = require('handlebars');
+
+Handlebars.registerHelper('buildPaginationLink', (page, currentUrl) => {
+  const queryParams = new URLSearchParams(currentUrl.split('?')[1]);
+  queryParams.set('page', page);
+  return `${currentUrl.split('?')[0]}?${queryParams.toString()}`;
+});
+
 // const USE_MONGO_DB = require('../config/config');
 // const productManager = USE_MONGO_DB ? new ProductManagerMongo() : new ProductManagerFile();
 
 productsViewsRouter.get("/", async (req, res) => {
+  
+
   const page = req.query.page || 1;
   const limit = req.query.limit || 10;
   const sort = req.query.sort || "";
@@ -21,7 +31,11 @@ productsViewsRouter.get("/", async (req, res) => {
   }
 
   if (stock !== "") {
-    query.stock = parseInt(stock);
+    if (stock === "+6") {
+      query.stock = { $gt: 6 };
+    } else {
+      query.stock = parseInt(stock);
+    }
   }
 
   let sortQuery = {};
@@ -40,12 +54,26 @@ productsViewsRouter.get("/", async (req, res) => {
 
   try {
     const products = await productModel.paginate(query, options);
+    const allCategories = await productModel.distinct("category");
+    const selectedCategory = category;
+
+    const categoriesWithSelection = allCategories.map((cat) => ({
+      category: cat,
+      isSelected: cat === selectedCategory,
+    }));
+
     console.log("Products:", products);
+    console.log(products.totalPages)
     products.docs = products.docs.map((product) => product.toObject());
 
     const user = req.session.user;
 
-    return res.render("products", { products, user });
+    const pages = [];
+    for (let i = 1; i <= products.totalPages; i++) {
+      pages.push(i);
+    }
+
+    return res.render("products", { products, user, showHeader: true, pages, categoriesWithSelection});
   } catch (error) {
     console.error("Error:", error);
     return res

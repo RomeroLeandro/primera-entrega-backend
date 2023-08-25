@@ -1,5 +1,9 @@
 const express = require('express')
+const passport = require('passport')
+
 const userModel = require('../dao/model/user-model')
+
+const {createHash, isValidPassword} = require('../utils/passwordHash')
 
 const sessionRouter = express.Router()
 
@@ -16,45 +20,62 @@ sessionRouter.get('/',(req, res) =>{
     }
 })
 
-sessionRouter.post('/register', async (req, res) => {
-    const { name, lastName, email, age, password, admin } = req.body;
+sessionRouter.post('/register',
+passport.authenticate('register', {failureRedirect: '/failRegister'}),
+async(req, res) => {
+    const body = req.body
+    body.password = createHash(body.password)
+    console.log('Solicitud de registro recibida'); 
+    console.log({ body })
+    
 
-    const user = await userModel.create({
-        name,
-        lastName,
-        email,
-        age,
-        password,
-        admin: admin === 'true'
-    });
-
-    return res.redirect('/sessions/profile');
-});
-
-sessionRouter.post('/login', async (req, res) => {
-    console.log("Login route accessed");
-    console.log("req.body:", req.body);
-    let user = await userModel.findOne({email: req.body.email});
-
-    if(!user){
-        return res.status(401).json({
-            error: 'El usuario no existe'
-        });
+    if (req.query.client === 'view') {
+      return res.redirect('/sessions/login')
     }
 
-    if(user.password !== req.body.password) {
-        return res.status(401).json({
-            error: 'Los datos son incorrectos'
-        });
-    }
+    return res.redirect('/sessions/login')
+    // return res.status(201).json(req.user)
+})
 
-    user = user.toObject();
 
-    delete user.password;
+sessionRouter.get('/failregister', (req, res) => {
+    return res.json({
+      error: 'Error al registrarse'
+    })
+  })
 
-    req.session.user = user;
 
-    return res.redirect('/products');
+sessionRouter.post('/login',
+passport.authenticate('login', {failureRedirect: '/faillogin'}),
+async(req, res) => {
+    let user = await userModel.findOne({ email: req.body.email })
+
+  if (!user) {
+    return res.status(401).json({
+      error: 'El usuario no existe en el sistema'
+    })
+  }
+
+  if (!isValidPassword(req.body.password, user.password)) {
+    return res.status(401).json({
+      error: 'Datos incorrectos'
+    })
+  }
+
+  user = user.toObject()
+
+  delete user.password
+
+  req.session.user = user
+
+  return res.json(user)
+})
+
+
+sessionRouter.get('/faillogin', (req, res) => {
+  return res.json({
+    error: 'Error al iniciar sesión'
+  })
 })
 
 sessionRouter.post('/logout', (req, res) => {
@@ -66,5 +87,22 @@ sessionRouter.post('/logout', (req, res) => {
         return res.redirect('/sessions/login'); 
     });
 });
+
+sessionRouter.post('/recovery-password', async (req, res) => {
+
+    let user = await userModel.findOne({ email: req.body.email })
+  
+    if (!user) {
+      return res.status(401).json({
+        error: 'El usuario no existe en el sistema'
+      })
+    }
+  
+    const newPassword = createHash(req.body.password)
+    await userModel.updateOne({ email: user.email }, { password: newPassword })
+  
+    return res.redirect('/login')
+  
+  })
 
 module.exports = sessionRouter

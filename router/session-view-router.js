@@ -19,26 +19,26 @@ const adminMiddleware = async (req, res, next) => {
 };
 
   sessionViewRouter.get('/dashboard', adminMiddleware, (req, res) => {
-    return res.render('dashboard'); 
+    return res.render('dashboard', { showHeader: true } )
 });
 
 sessionViewRouter.get('/register', sessionMiddleware, (req, res)=> {
-    return res.render('register')
+    return res.render('register', { showHeader: false })
 })
 
 sessionViewRouter.get('/login', sessionMiddleware, (req, res) => {
-    return res.render('login')
+    return res.render('login', { showHeader: false })
 })
 
 sessionViewRouter.get('/profile', (req, res, next) => {
     if (!req.session.user) {
-      return res.redirect('login')
+      return res.redirect('login', { showHeader: true })
     }
   
     return next()
   }, (req, res) => {
     const user = req.session.user
-    return res.render('profile', { user })
+    return res.render('profile', { user, showHeader: true })
   })
 
 module.exports = sessionViewRouter
