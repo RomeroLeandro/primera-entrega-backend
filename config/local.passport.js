@@ -1,5 +1,6 @@
 const passport = require('passport')
 const passportLocal = require('passport-local')
+const GitHubStrategy = require('passport-github2')
 const userModel = require('../dao/model/user-model')
 const {createHash, isValidPassword} = require('../utils/passwordHash')
 
@@ -55,18 +56,52 @@ const initializepassport = () => {
         }}
     ))
 
+    passport.use('github', new GitHubStrategy({
+        clientID:'Iv1.b55349d0f398286a',
+        clientSecret:'6fe9ee4c3b3dbbddb1a5615d09f193ef5efab5d0',
+        callbackURL:'http://localhost:8080/api/sessions/github-callback',
+    }, async(accsessToken, refreshToken, profile, done) => {
+        try {
+
+            console.log('GitHub Strategy called');
+
+            const existingUser = await userModel.findOne({
+                $or: [
+                    { username: profile._json.login },
+                    { email: profile.emails[0].value }
+                ]
+            });
+
+            if (existingUser) {
+    console.log('El usuario ya existe, pero vamos a autenticarlo');
+    return done(null, { _id: existingUser._id, user: existingUser })
+}
+            console.log('GitHub Email(s):', profile.emails); 
+            const newUser = await userModel.create({
+                username: profile._json.login,
+                name: profile._json.name,
+                email: profile.emails[0].value
+            })
+            console.log('Nuevo Usuario:', newUser);
+            return done(null, { _id: newUser._id, user: newUser });
+        } catch(e) {
+            console.error('Error en la estrategia de GitHub:', e);
+            return done(e)
+        }
+    }))
+
     passport.serializeUser((user, done) =>{
         console.log('serializeUser')
         done(null, user._id)
     })
 
-    passport.deserializeUser(async (id, done) => {
-        console.log('deserealizedUser')
+    passport.deserializeUser(async (serializedData, done) => {
+        console.log('deserializedUser');
         try {
-            const user = await userModel.findById(id);
+            const user = await userModel.findById(serializedData._id);
             done(null, user);
         } catch (error) {
-            done(error);
+            done(error, null);
         }
     });
 }

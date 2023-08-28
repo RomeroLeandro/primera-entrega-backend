@@ -32,7 +32,7 @@ sessionViewRouter.get('/login', sessionMiddleware, (req, res) => {
 
 sessionViewRouter.get('/profile', (req, res, next) => {
     if (!req.session.user) {
-      return res.redirect('login', { showHeader: true })
+      return res.redirect('login')
     }
   
     return next()

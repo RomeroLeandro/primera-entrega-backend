@@ -7,17 +7,35 @@ const {createHash, isValidPassword} = require('../utils/passwordHash')
 
 const sessionRouter = express.Router()
 
-sessionRouter.get('/',(req, res) =>{
-    return res.json(req.session)
-    if(!req.session.counter){
-        req.session.counter = 1
-        req.session.name = req.query.name
 
-        return res.json(`bienvenido ${req.session.name}`)
-    } else {
-        req.session.counter++
-        return res.json(`${req.session.name} has visitado la pagina ${req.session.counter} veces`)
-    }
+// sessionRouter.use('/', authController);
+
+// sessionRouter.get('/',(req, res) =>{
+//     return res.json(req.session)
+//     if(!req.session.counter){
+//         req.session.counter = 1
+//         req.session.name = req.query.name
+
+//         return res.json(`bienvenido ${req.session.name}`)
+//     } else {
+//         req.session.counter++
+//         return res.json(`${req.session.name} has visitado la pagina ${req.session.counter} veces`)
+//     }
+// })
+
+sessionRouter.get('/github', passport.authenticate('github', {scope: ['user:email']}), async (req, res) =>{
+  console.log('GitHub authentication initiated');
+})
+
+sessionRouter.get('/github-callback', passport.authenticate('github', {failureRedirect: '/login'}), async(req, res) => {
+  console.log('GitHub authentication callback received');
+  req.session.user = req.user;
+  console.log('User in session:', req.session.user);
+
+  // Agregar esta línea para verificar la información del usuario
+  console.log('User data:', req.user);
+
+  return res.render('profile', { user: req.user, showHeader: true });
 })
 
 sessionRouter.post('/register',
