@@ -32,7 +32,6 @@ sessionRouter.get('/github-callback', passport.authenticate('github', {failureRe
   req.session.user = req.user;
   console.log('User in session:', req.session.user);
 
-  // Agregar esta línea para verificar la información del usuario
   console.log('User data:', req.user);
 
   return res.render('profile', { user: req.user, showHeader: true });

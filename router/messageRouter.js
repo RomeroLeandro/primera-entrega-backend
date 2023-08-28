@@ -4,12 +4,10 @@ const MessageManager = require('../dao/manager/message-manager');
 
 const messageManager = new MessageManager();
 
-// Mostrar formulario para crear nuevo mensaje
 messageRouter.get('/new', (req, res) => {
   res.render('messageForm', { message: {} });
 });
 
-// Mostrar formulario para editar mensaje existente
 messageRouter.get('/edit/:id', async (req, res) => {
   try {
     const messageId = req.params.id;
@@ -20,7 +18,6 @@ messageRouter.get('/edit/:id', async (req, res) => {
   }
 });
 
-// Obtener todos los mensajes
 messageRouter.get('/', async (req, res) => {
   try {
     const messages = await messageManager.getMessages();
@@ -30,7 +27,6 @@ messageRouter.get('/', async (req, res) => {
   }
 });
 
-// Crear un nuevo mensaje
 messageRouter.post('/', async (req, res) => {
   try {
     const { user, message } = req.body;
@@ -41,7 +37,6 @@ messageRouter.post('/', async (req, res) => {
   }
 });
 
-// Actualizar un mensaje por ID
 messageRouter.put('/:id', async (req, res) => {
   try {
     const messageId = req.params.id;
@@ -57,7 +52,6 @@ messageRouter.put('/:id', async (req, res) => {
   }
 });
 
-// Eliminar un mensaje por ID
 messageRouter.delete('/:id', async (req, res) => {
   try {
     const messageId = req.params.id;
