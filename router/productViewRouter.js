@@ -6,12 +6,45 @@ const productModel = require("../dao/model/products-model");
 
 const Handlebars = require('handlebars');
 
-Handlebars.registerHelper('buildPaginationLink', (page, currentUrl) => {
-  const queryParams = new URLSearchParams(currentUrl.split('?')[1]);
-  queryParams.set('page', page);
-  return `${currentUrl.split('?')[0]}?${queryParams.toString()}`;
+Handlebars.registerHelper('ifCond', function(v1, operator, v2, options) {
+  switch (operator) {
+    case '===':
+      return v1 === v2 ? options.fn(this) : options.inverse(this);
+    case '!==':
+      return v1 !== v2 ? options.fn(this) : options.inverse(this);
+    case '<':
+      return v1 < v2 ? options.fn(this) : options.inverse(this);
+    case '<=':
+      return v1 <= v2 ? options.fn(this) : options.inverse(this);
+    case '>':
+      return v1 > v2 ? options.fn(this) : options.inverse(this);
+    case '>=':
+      return v1 >= v2 ? options.fn(this) : options.inverse(this);
+    default:
+      return options.inverse(this);
+  }
+});
+Handlebars.registerHelper('buildPaginationLink', (param, value, currentUrl) => {
+  if (currentUrl && typeof currentUrl === 'string') {
+    const queryParams = new URLSearchParams(currentUrl.split('?')[1]);
+    queryParams.set(param, value);
+    
+    return `${currentUrl.split('?')[0]}?${queryParams.toString()}`;
+  } else {
+    console.log('Error: currentUrl no está definido o no es una cadena.');
+    return currentUrl; 
+  }
 });
 
+Handlebars.registerHelper('buildFilterUrl', (currentUrl, filters) => {
+  const currentParams = new URLSearchParams(currentUrl.split('?')[1] || '');
+
+  for (const param in filters) {
+    currentParams.set(param, filters[param]);
+  }
+
+  return `${currentUrl.split('?')[0]}?${currentParams.toString()}`;
+});
 // const USE_MONGO_DB = require('../config/config');
 // const productManager = USE_MONGO_DB ? new ProductManagerMongo() : new ProductManagerFile();
 
@@ -73,7 +106,19 @@ productsViewsRouter.get("/", async (req, res) => {
       pages.push(i);
     }
 
-    return res.render("products", { products, user, showHeader: true, pages, categoriesWithSelection});
+    const currentUrl = req.originalUrl;
+
+    return res.render("products", {
+      products,
+      user,
+      showHeader: true,
+      pages,
+      categoriesWithSelection,
+      requestUrl: currentUrl,
+      buildFilterUrl: (filters) => {
+        return `/products?${queryString.stringify({ ...req.query, ...filters })}`;
+      }
+    });
   } catch (error) {
     console.error("Error:", error);
     return res

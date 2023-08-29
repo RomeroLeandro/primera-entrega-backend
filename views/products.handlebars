@@ -1,60 +1,38 @@
-
 <h4>Página: {{products.page}} de {{products.totalPages}}</h4>
 
 <div style="display: flex">
-  <a
-    href="/products?page={{products.page}}&limit=10&sort={{products.sort}}&category={{products.category}}&stock={{products.stock}}"
-  >10 por página</a>
-  <a
-    href="/products?page={{products.page}}&limit=20&sort={{products.sort}}&category={{products.category}}&stock={{products.stock}}"
-  >20 por página</a>
-  <a
-    href="/products?page={{products.page}}&limit=50&sort={{products.sort}}&category={{products.category}}&stock={{products.stock}}"
-  >50 por página</a>
+  <a href="{{buildFilterUrl requestUrl (hash limit=10)}}" >10 por página</a>
+  <a href="{{buildFilterUrl requestUrl (hash limit=20)}}" >20 por página</a>
+  <a href="{{buildFilterUrl requestUrl (hash limit=50)}}" >50 por página</a>
 </div>
-<form action="/products" method="GET">
+
+<form action="{{buildFilterUrl requestUrl (hash category=products.category)}}" method="GET">
   <select name="category" onchange="this.form.submit()">
     <option value="">Todas las categorías</option>
     {{#each categoriesWithSelection}}
-      <option value="{{category}}" {{#if isSelected}}selected{{/if}}>{{category}}</option>
+      <option value="{{category}}" {{#ifCond products.category '===' category}}selected{{/ifCond}}>{{category}}</option>
     {{/each}}
   </select>
 </form>
 
-<form action="/products" method="GET">
+<form action="{{buildFilterUrl requestUrl (hash stock=products.stock)}}" method="GET">
   <select name="stock" onchange="this.form.submit()">
     <option value="">Todos los niveles de stock</option>
-    <option value="1">1 unidad</option>
-    <option value="2">2 unidades</option>
-    <option value="3">3 unidades</option>
-    <option value="4">4 unidades</option>
-    <option value="5">5 unidades</option>
-    <option value="+6">+6 unidades</option>
+    <option value="1" {{#ifCond products.stock '===' 1}}selected{{/ifCond}}>1 unidad</option>
+    <option value="2" {{#ifCond products.stock '===' 2}}selected{{/ifCond}}>2 unidades</option>
+    <option value="3" {{#ifCond products.stock '===' 3}}selected{{/ifCond}}>3 unidades</option>
+    <option value="4" {{#ifCond products.stock '===' 4}}selected{{/ifCond}}>4 unidades</option>
+    <option value="5" {{#ifCond products.stock '===' 5}}selected{{/ifCond}}>5 unidades</option>
+    <option value="6" {{#ifCond products.stock '===' 6}}selected{{/ifCond}}>6 unidades</option>
   </select>
 </form>
 
-<div class="d-flex flex-row justify-content-end align-items-center gap-3">
-  <p class="m-0">Ordenar por:</p>
-  <select class="form-select w-auto" onchange="location = this.value;">
-    <option value="/products">Mas relevantes</option>
-  <option value="/products?sort=asc">Menor precio</option>
-  <option value="/products?sort=desc">Mayor precio</option>
-</select>
-</div>
-
-<!-- Agregar formulario para filtrar por stock -->
-<form action="/products" method="get">
-  <input type="hidden" name="page" value="{{products.page}}" />
-  <input type="hidden" name="limit" value="{{products.limit}}" />
-  <input type="hidden" name="sort" value="{{products.sort}}" />
-  <input type="hidden" name="category" value="{{products.category}}" />
-  <input
-    type="number"
-    name="stock"
-    placeholder="Filtrar por stock"
-    value="{{products.stock}}"
-  />
-  <button type="submit">Filtrar</button>
+<form action="{{buildFilterUrl requestUrl (hash sort='asc')}}" method="GET">
+  <select name="sort" onchange="this.form.submit()">
+    <option value="">Ordenar por</option>
+    <option value="asc" {{#ifCond products.sort '===' 'asc'}}selected{{/ifCond}}>Menor precio</option>
+    <option value="desc" {{#ifCond products.sort '===' 'desc'}}selected{{/ifCond}}>Mayor precio</option>
+  </select>
 </form>
 
 <div class="product-container">
@@ -75,22 +53,24 @@
     <ul class="pagination d-flex justify-content-center">
       {{#if products.hasPrevPage}}
         <li class="page-item">
-          <a class="page-link" href="/products?page={{products.prevPage}}&limit={{products.limit}}&sort={{products.sort}}&category={{products.category}}&stock={{products.stock}}">Anterior</a>
+          <a class="page-link" href="{{buildPaginationLink 'page' products.prevPage requestUrl}}">Anterior</a>
         </li>
       {{/if}}
 
       {{#each pages}}
-        <li class="page-item">
-          <a class="page-link" href="/products?page={{this}}&limit={{products.limit}}&sort={{products.sort}}&category={{products.category}}&stock={{products.stock}}">{{this}}</a>
-        </li>
-      {{/each}}
+
+  <li class="page-item">
+
+    <a class="page-link" href="{{buildPaginationLink 'page' this requestUrl}}">{{this}}</a>
+
+  </li>
+
+{{/each}}
 
       {{#if products.hasNextPage}}
         <li class="page-item">
-          <a class="page-link" href="/products?page={{products.nextPage}}&limit={{products.limit}}&sort={{products.sort}}&category={{products.category}}&stock={{products.stock}}">Siguiente</a>
+          <a class="page-link" href="{{buildPaginationLink 'page' products.nextPage requestUrl}}">Siguiente</a>
         </li>
       {{/if}}
     </ul>
   </nav>
-
-

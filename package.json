@@ -25,6 +25,7 @@
     "passport-github2": "^0.1.12",
     "passport-local": "^1.0.0",
     "path": "^0.12.7",
+    "querystring": "^0.2.1",
     "session-file-store": "^1.5.0",
     "socket.io": "^4.7.1"
   }
