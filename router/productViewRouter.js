@@ -37,15 +37,21 @@ Handlebars.registerHelper('buildPaginationLink', (param, value, currentUrl) => {
 });
 
 Handlebars.registerHelper('buildFilterUrl', (currentUrl, filters) => {
-  const currentParams = new URLSearchParams(currentUrl.split('?')[1] || '');
-
-
-  for (const param in filters) {
-    if (filters[param] !== undefined && filters[param] !== '') {
-      currentParams.set(param, filters[param]);
-    }
+  if (typeof currentUrl !== 'string') {
+    console.log('Error: currentUrl no está definido o no es una cadena.');
+    return currentUrl;
   }
 
+  const currentParams = new URLSearchParams(currentUrl.split('?')[1] || '');
+
+  for (const param in filters) {
+    const value = filters[param];
+    if (value !== undefined && value !== '') {
+      currentParams.set(param, value);
+    } else {
+      currentParams.delete(param);
+    }
+  }
 
   return `${currentUrl.split('?')[0]}?${currentParams.toString()}`;
 });
