@@ -1,4 +1,4 @@
-const express = require("express");
+const express = require('express')
 
 const cookieParser = require('cookie-parser')
 const session = require('express-session')
@@ -29,6 +29,8 @@ const initializepassport = require('./config/local.passport');
 app.engine("handlebars", handlebars.engine());
 app.set("views", __dirname + "/views");
 app.set("view engine", "handlebars");
+
+
 
 app.use(cookieParser('secretkey'))
 

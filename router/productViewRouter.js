@@ -39,12 +39,17 @@ Handlebars.registerHelper('buildPaginationLink', (param, value, currentUrl) => {
 Handlebars.registerHelper('buildFilterUrl', (currentUrl, filters) => {
   const currentParams = new URLSearchParams(currentUrl.split('?')[1] || '');
 
+
   for (const param in filters) {
-    currentParams.set(param, filters[param]);
+    if (filters[param] !== undefined && filters[param] !== '') {
+      currentParams.set(param, filters[param]);
+    }
   }
+
 
   return `${currentUrl.split('?')[0]}?${currentParams.toString()}`;
 });
+
 // const USE_MONGO_DB = require('../config/config');
 // const productManager = USE_MONGO_DB ? new ProductManagerMongo() : new ProductManagerFile();
 
@@ -109,16 +114,18 @@ productsViewsRouter.get("/", async (req, res) => {
     const currentUrl = req.originalUrl;
 
     return res.render("products", {
-      products,
-      user,
-      showHeader: true,
-      pages,
-      categoriesWithSelection,
-      requestUrl: currentUrl,
-      buildFilterUrl: (filters) => {
-        return `/products?${queryString.stringify({ ...req.query, ...filters })}`;
-      }
-    });
+  products,
+  user,
+  showHeader: true,
+  pages,
+  categoriesWithSelection,
+  requestUrl: currentUrl,
+  // Pasar todos los filtros actuales aquí
+  limit: limit,
+  category: category,
+  stock: stock,
+  sort: sort,
+});
   } catch (error) {
     console.error("Error:", error);
     return res
