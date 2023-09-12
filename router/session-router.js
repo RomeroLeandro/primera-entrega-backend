@@ -8,21 +8,6 @@ const {createHash, isValidPassword} = require('../utils/passwordHash')
 const sessionRouter = express.Router()
 
 
-// sessionRouter.use('/', authController);
-
-// sessionRouter.get('/',(req, res) =>{
-//     return res.json(req.session)
-//     if(!req.session.counter){
-//         req.session.counter = 1
-//         req.session.name = req.query.name
-
-//         return res.json(`bienvenido ${req.session.name}`)
-//     } else {
-//         req.session.counter++
-//         return res.json(`${req.session.name} has visitado la pagina ${req.session.counter} veces`)
-//     }
-// })
-
 sessionRouter.get('/github', passport.authenticate('github', {scope: ['user:email']}), async (req, res) =>{
   console.log('GitHub authentication initiated');
 })
@@ -105,6 +90,7 @@ sessionRouter.post('/logout', (req, res) => {
     });
 });
 
+
 sessionRouter.post('/recovery-password', async (req, res) => {
 
     let user = await userModel.findOne({ email: req.body.email })
@@ -121,5 +107,16 @@ sessionRouter.post('/recovery-password', async (req, res) => {
     return res.redirect('/login')
   
   })
+
+  sessionRouter.get('/current', (req, res) => {
+    if (req.isAuthenticated()) { // Verificar si el usuario está autenticado
+      // req.user contiene la información del usuario autenticado
+      return res.json({ user: req.user });
+    } else {
+      return res.status(401).json({ error: 'Usuario no autenticado' });
+    }
+  });
+
+  
 
 module.exports = sessionRouter
