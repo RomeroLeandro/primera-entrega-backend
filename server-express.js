@@ -31,8 +31,10 @@ app.set("view engine", "handlebars");
 
 app.use(cookieParser('secretkey'))
 
+const config = require('./config/config')
+
 const MONGODB_CONNECT =
-  "mongodb+srv://romerodisind:coder2023@cluster0.c9jlz11.mongodb.net/ecommerce?retryWrites=true&w=majority";
+  `mongodb+srv://${config.mongo.user}:${config.mongo.password}@cluster0.c9jlz11.mongodb.net/${config.mongo.name}?retryWrites=true&w=majority`;
 mongoose
   .connect(MONGODB_CONNECT)
   .then(() => console.log("conexion DB"))
@@ -46,7 +48,7 @@ app.use(session({
     mongoUrl: MONGODB_CONNECT,
     ttl: 180
   }),
-  secret: 'secretSession',
+  secret: `${config.session.secret}`,
   resave: true,
   saveUninitialized: true
 }))
@@ -73,6 +75,6 @@ app.get("/", (req, res) => {
   });
 });
 
-const PORT = 8080;
+const PORT = `${config.url.port}`;
 app.listen(PORT, () => console.log(`servidor corriendo en puerto ${PORT}`));
 

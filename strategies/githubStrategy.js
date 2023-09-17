@@ -1,11 +1,12 @@
 const GitHubStrategy = require('passport-github2')
 const userModel = require('../dao/model/user-model')
 const Cart = require('../dao/model/cart-model')
+const config = require('../config/config')
 
 module.exports = new GitHubStrategy({
-    clientID: 'Iv1.b55349d0f398286a',
-    clientSecret: '6fe9ee4c3b3dbbddb1a5615d09f193ef5efab5d0',
-    callbackURL: 'http://localhost:8080/api/sessions/github-callback',
+    clientID: `${config.github.clientID}`,
+    clientSecret: `${config.github.clientSecret}`,
+    callbackURL: `${config.github.callbackURL}`,
   },
     async (accessToken, refreshToken, profile, done) => {
         try {
