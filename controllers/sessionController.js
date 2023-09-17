@@ -41,7 +41,7 @@ async function login(req, res) {
             error: 'El usuario no existe en el sistema',
         });
     }
-    if (!isValidPassword(user, req.body.password)) {
+    if (!isValidPassword(req.body.password, user.password)) { // Corrige el orden de los argumentos
         return res.status(401).json({
             error: 'Contraseña incorrecta',
         });

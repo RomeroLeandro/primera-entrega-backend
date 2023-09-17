@@ -13,9 +13,6 @@ const cartViewRouter = require("./router/cartViewRouter");
 const sessionRouter = require('./router/session-router')
 const sessionViewRouter = require('./router/session-view-router')
 const messageRouter = require("./router/messageRouter");
-
-const passport = require('passport')
-
 const mongoose = require("mongoose");
 const handlebars = require("express-handlebars");
 
@@ -23,7 +20,7 @@ const app = express();
 
 const fileStorage = FileStore(session)
 
-const initializepassport = require('./config/local.passport');
+const passport = require('./config/initializePassport');
 
 // Configuración handlebars
 app.engine("handlebars", handlebars.engine());
@@ -54,7 +51,7 @@ app.use(session({
   saveUninitialized: true
 }))
 
-initializepassport()
+
 app.use(passport.initialize())
 app.use(passport.session())
 
