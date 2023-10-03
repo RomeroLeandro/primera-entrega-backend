@@ -13,6 +13,7 @@ const cartViewRouter = require("./router/cartViewRouter");
 const sessionRouter = require('./router/session-router')
 const sessionViewRouter = require('./router/session-view-router')
 const messageRouter = require("./router/messageRouter");
+const ticketRouter = require("./router/ticketRouter");
 const mongoose = require("mongoose");
 const handlebars = require("express-handlebars");
 
@@ -68,6 +69,7 @@ app.use("/messages/new", (req, res) =>
   res.render("messageForm", { message: {} })
 );
 app.use("/messages/edit/:id", messageRouter);
+app.use("/api/tickets", ticketRouter);
 
 app.get("/", (req, res) => {
   res.json({

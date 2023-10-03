@@ -1,7 +1,7 @@
 const ProductManagerMongo = require('../dao/manager/productsManagerMongo')
 const ProductManagerFile = require('../dao/manager/productsManagerFile');
 const USE_MONGO_DB = require('../config/config');
-const productManager = USE_MONGO_DB ? new ProductManagerMongo() : new ProductManagerFile();
+const productManager = new ProductManagerMongo()
 
 async function getAllProducts() {
     try {

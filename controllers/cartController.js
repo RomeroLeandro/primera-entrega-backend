@@ -80,6 +80,20 @@ async function updateProductQuantity(req, res) {
     }
 }
 
+async function purchaseCart (req, res) {
+    try {
+        const cartId = req.params.id;
+        const result = await cartService.purchaseCart(cartId);
+        const cart = await Cart.findById(cartId);
+    cart.items = cart.items.filter((item) => !result.productsNotPurchased.includes(item.product));
+    await cart.save();
+
+    res.status(200).json(result);
+    } catch (error) {
+        res.status(500).json({ error: 'Error al realizar la compra' });
+}
+}
+
 module.exports = {
     getCart,
     getCartById,
@@ -87,5 +101,6 @@ module.exports = {
     addProductToCart,
     removeProductFromCart,
     updateCart,
-    updateProductQuantity
+    updateProductQuantity,
+    purchaseCart
 }
