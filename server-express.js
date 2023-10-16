@@ -22,6 +22,8 @@ const app = express();
 
 const fileStorage = FileStore(session)
 
+const logger = require('./logger')
+
 const passport = require('./config/initializePassport');
 
 // Configuración handlebars
@@ -75,6 +77,14 @@ app.use("/messages/new", (req, res) =>
 );
 app.use("/messages/edit/:id", messageRouter);
 app.use("/api/tickets", ticketRouter);
+
+app.get('/loggerTest', (req, res) => {
+  logger.debug('Este es un mensaje de depuración.');
+  logger.info('Este es un mensaje informativo.');
+  logger.warn('Este es un mensaje de advertencia.');
+  logger.error('Este es un mensaje de error.');
+  res.send('Registros generados. Verifica los archivos de registro.');
+});
 
 app.get("/", (req, res) => {
   res.json({
