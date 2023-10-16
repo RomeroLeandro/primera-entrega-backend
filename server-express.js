@@ -14,6 +14,7 @@ const sessionRouter = require('./router/session-router')
 const sessionViewRouter = require('./router/session-view-router')
 const messageRouter = require("./router/messageRouter");
 const ticketRouter = require("./router/ticketRouter");
+const mockingRouter = require("./router/mockingRouter");
 const mongoose = require("mongoose");
 const handlebars = require("express-handlebars");
 
@@ -58,6 +59,10 @@ app.use(session({
 app.use(passport.initialize())
 app.use(passport.session())
 
+if (proccess.env.NODE_ENV !== 'production') {
+  app.use('/api', mockingRouter) 
+}
+ 
 app.use("/api/products", productsRouter);
 app.use("/products", productViewRouter);
 app.use("/api/carts", cartRouter);

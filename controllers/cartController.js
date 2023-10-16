@@ -1,4 +1,5 @@
 const cartService = require('../services/cartServices');
+const errorMessages = require('../errors/errorController');
 
 async function getCart(req, res) {
     try {
@@ -6,7 +7,8 @@ async function getCart(req, res) {
         res.json(carts);
     } catch (error) {
         console.error(error);
-    res.status(500).json({ error: 'Error al obtener los carritos' });
+        const errorMessage = customErrorHandler('CART_FETCH_FAILED');
+        res.status(500).json(errorMessage);
     }
 }
 
@@ -17,7 +19,8 @@ async function getCartById(req, res) {
         res.json(cart);
     } catch (error) {
         console.error(error);
-    res.status(500).json({ error: 'Error al obtener el carrito' });
+        const errorMessage = customErrorHandler('CART_FETCH_FAILED');
+        res.status(500).json(errorMessage);
     }
 }
 
@@ -27,7 +30,8 @@ async function addCart(req, res) {
         res.status(201).json(newCart);
     } catch (error) {
         console.error(error);
-    res.status(500).json({ error: 'Error al agregar el carrito' });
+        const errorMessage = customErrorHandler('CART_ADD_FAILED');
+        res.status(500).json(errorMessage);
     }
 }   
 
@@ -39,7 +43,8 @@ async function addProductToCart(req, res) {
         res.status(201).json(cart);
     } catch (error) {
         console.error(error);
-    res.status(500).json({ error: 'Error al agregar el producto al carrito' });
+        const errorMessage = customErrorHandler('PRODUCT_ADD_TO_CART_FAILED');
+        res.status(500).json(errorMessage);
     }
 }
 
@@ -48,50 +53,12 @@ async function removeProductFromCart(req, res) {
     const pid = req.params.id;
     try {
         await cartService.removeProductFromCart(cid, pid);
-    res.status(204).json({ status: 'success', message: 'Producto eliminado del carrito con éxito' });
+        res.status(204).json({ status: 'success', message: 'Producto eliminado del carrito con éxito' });
     } catch (error) {
         console.error(error);
-    res.status(500).json({ error: 'Error al eliminar el producto del carrito' });
+        const errorMessage = customErrorHandler('PRODUCT_REMOVE_FROM_CART_FAILED');
+        res.status(500).json(errorMessage);
     }
-}
-
-async function updateCart(req, res) {
-    const cartId = req.params.cid;
-    const updatedProducts = req.body.products;
-    try {
-        await cartService.updateCart(cartId, updatedProducts);
-        res.status(200).json({ status: 'success', message: 'Carrito actualizado con éxito' });
-    } catch (error) {
-        console.error(error);
-    res.status(500).json({ error: 'Error al actualizar el carrito' });
-    }
-}
-
-async function updateProductQuantity(req, res) {
-    const cartId = req.params.cid;
-    const productId = req.params.pid;
-    const quantity = req.body.quantity;
-    try {
-        await cartService.updateProductQuantity(cartId, productId, quantity);
-        res.status(200).json({ status: 'success', message: 'Carrito actualizado con éxito' });
-    } catch (error) {
-        console.error(error);
-    res.status(500).json({ error: 'Error al actualizar el carrito' });
-    }
-}
-
-async function purchaseCart (req, res) {
-    try {
-        const cartId = req.params.id;
-        const result = await cartService.purchaseCart(cartId);
-        const cart = await Cart.findById(cartId);
-    cart.items = cart.items.filter((item) => !result.productsNotPurchased.includes(item.product));
-    await cart.save();
-
-    res.status(200).json(result);
-    } catch (error) {
-        res.status(500).json({ error: 'Error al realizar la compra' });
-}
 }
 
 module.exports = {

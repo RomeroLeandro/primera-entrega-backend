@@ -1,4 +1,4 @@
-function generateProducts(id) {
+function generateProduct(id) {
     return {
         _id: id,
     name: `Product ${id}`,
@@ -11,7 +11,7 @@ function generateProducts(id) {
 function generateMockProducts() {
     const products = [];
     for (let i = 0; i < 100; i++) {
-        products.push(generateProducts(i));
+        products.push(generateProduct(i));
     }
     return products;
 }
