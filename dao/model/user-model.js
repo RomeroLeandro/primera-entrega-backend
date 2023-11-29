@@ -9,16 +9,26 @@ const userSchema = Schema({
     unique: true,
   },
   age: Number,
-  password: String,
-  createdAt: Date,
+  password: { type: String, required: true },
+  createdAt: { type: Date, default: Date.now },
+  documents: [
+    {
+      name: String,
+      reference: String
+    }
+  ],
+  last_connection: {
+    type: Date,
+    default: null 
+  },
   admin: {
     type: Boolean,
     default: false,
   },
   role: {
     type: String,
-    enum: ['premium', 'user'], 
-    default: 'user', 
+    enum: ['admin', 'premium', 'user'],
+    default: 'user',
   },
   cart: {
     type: mongoose.Schema.Types.ObjectId,

@@ -33,8 +33,19 @@ async function updatePassword(email, newPassword) {
     }
 }
 
+async function updateUserLastConnection(userId) {
+    try {
+      const currentDate = new Date();
+      await userModel.findByIdAndUpdate(userId, { last_connection: currentDate });
+    } catch (error) {
+      console.error(error);
+      throw new Error('Error while updating user last connection');
+    }
+  }
+
 module.exports = {
     findUserByEmail,
     createUser,
-    updatePassword
+    updatePassword,
+    updateUserLastConnection
 }

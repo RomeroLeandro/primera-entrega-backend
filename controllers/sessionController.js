@@ -34,25 +34,47 @@ function failRegister(req, res) {
     });
 }
 
-async function login(req, res) {    
-    let user = await userModel.findOne({ email: req.body.email });
-    if (!user) {
+async function login(req, res) {
+    try {
+      let user = await userModel.findOne({ email: req.body.email });
+  
+      if (!user) {
         return res.status(401).json({
-            error: 'El usuario no existe en el sistema',
+          error: 'El usuario no existe en el sistema'
         });
-    }
-    if (!isValidPassword(req.body.password, user.password)) { // Corrige el orden de los argumentos
+      }
+  
+      if (!isValidPassword(req.body.password, user.password)) {
         return res.status(401).json({
-            error: 'Contraseña incorrecta',
+          error: 'Contraseña incorrecta'
         });
+      }
+  
+      user = user.toObject();
+      delete user.password;
+  
+      req.session.user = user;
+  
+      await sessionService.updateUserLastConnection(user._id);
+  
+      return res.json(user);
+    } catch (error) {
+      console.error(error);
+      return res.status(500).json({
+        error: 'Error al iniciar sesión'
+      });
     }
-    user = user.toObject();
-    delete user.password;
-
-    req.session.user = user;
-
-    return res.json(user);
-}
+  }
+  
+  function logout(req, res) {
+    req.session.destroy((err) => {
+      if (err) {
+        console.error("Error al cerrar sesión", err);
+        return res.status(500).json({ error: 'Error al cerrar sesión' });
+      }
+      return res.redirect('/sessions/login');
+    });
+  }
 
 function failLogin(req, res) {
     return res.json({
@@ -60,14 +82,7 @@ function failLogin(req, res) {
     });
 }
 
-function logout(req, res) {
-    req.session.destroy((err) => {
-        if (err) {
-            console.error("Error al cerrar sesion", err)
-            return res.status(500).json({error: 'Error al cerrar sesion'})
-        }
-        return res.redirect('/sessions/login')});
-}
+
 
 async function recoveryPassword (req, res) {
     let user = await userModel.findOne({ email: req.body.email })

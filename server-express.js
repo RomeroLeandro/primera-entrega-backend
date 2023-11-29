@@ -15,6 +15,7 @@ const sessionViewRouter = require('./router/session-view-router')
 const messageRouter = require("./router/messageRouter");
 const ticketRouter = require("./router/ticketRouter");
 const mockingRouter = require("./router/mockingRouter");
+const userRouter = require("./router/userRouter")
 const mongoose = require("mongoose");
 const handlebars = require("express-handlebars");
 
@@ -71,6 +72,7 @@ app.use("/api/carts", cartRouter);
 app.use("/cart", cartViewRouter);
 app.use('/api/sessions', sessionRouter)
 app.use('/sessions', sessionViewRouter)
+app.use('/api/users', userRouter)
 app.use("/api/messages", messageRouter);
 app.use("/messages/new", (req, res) =>
   res.render("messageForm", { message: {} })
